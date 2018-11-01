@@ -35,5 +35,5 @@ def forward_stepwise(x, y, k=5):
 
 if __name__ == '__main__':
     x, y, is_train = prostate.load_data()
-    x = utils.standardize(x)
+    x = utils.standardize_z_score(x)
     used_col, x_select = forward_stepwise(x, y)
