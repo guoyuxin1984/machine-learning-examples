@@ -28,7 +28,7 @@ def forward_stagewise(x, y, learning_rate=0.01):
                 selected_feature = i
         beta_hat[selected_feature] += learning_rate * residual.T.dot(x[:, selected_feature])/residual.T.dot(residual)
         residual = y - x.dot(beta_hat).reshape(n_samples,)
-    pass
+    return beta_hat
 
 
 if __name__ == '__main__':
@@ -36,5 +36,5 @@ if __name__ == '__main__':
     x = x[is_train == b'T']
     y = y[is_train == b'T']
 
-    x = utils.standardize(x)
+    x = utils.standardize_z_score(x)
     forward_stagewise(x, y, 0.8)
