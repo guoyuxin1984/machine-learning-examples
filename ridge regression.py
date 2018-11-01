@@ -4,7 +4,7 @@ import prostate
 
 
 def ridge_regression(x, y, lam=0.1):
-    x = utils.standardize(x)
+    x = utils.standardize_z_score(x)
     eye = np.eye(x.shape[1])
     beta_0 = np.mean(y)
     u, s, vt = np.linalg.svd(x)
@@ -16,7 +16,7 @@ def ridge_regression(x, y, lam=0.1):
 
 
 def ridge_reg_with_df(x, y, df=5, error=0.001):
-    x = utils.standardize(x)
+    x = utils.standardize_score(x)
     eye = np.eye(x.shape[1])
     beta_0 = np.mean(y)
     u, s, vt = np.linalg.svd(x)
