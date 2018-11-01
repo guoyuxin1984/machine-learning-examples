@@ -13,8 +13,8 @@ import utils
 class OLS:
     def __init__(self, train_input, train_output):
         self.x_org = train_input
-        self.x = np.insert(self.x_org, obj=0, values=1, axis=1)
-        self.x = utils.standardize(self.x)
+        self.x = utils.standardize_z_score(self.x_org)
+        self.x = np.insert(self.x, obj=0, values=1, axis=1)
         self.y = train_output
         self.xtx = self.x.T.dot(self.x)
         self.u, self.s, self.vt = np.linalg.svd(self.xtx)
