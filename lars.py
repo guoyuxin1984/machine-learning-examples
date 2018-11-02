@@ -7,21 +7,6 @@ import utils
 import matplotlib.pyplot as plt
 
 
-def lars(x, y):
-    beta_0 = np.mean(y)
-    n_feature = x.shape[1]
-    beta = np.zeros(n_feature)
-    r = y - beta_0
-    corr = 0
-    for i in range(n_feature):
-        temp_corr = np.abs(x[:, i].T.dot(r))
-        if temp_corr > corr:
-            corr = temp_corr
-
-        pass
-    pass
-
-
 def get_gamma_next_index(used_x, c_max, c_vec, a, a_vec):
     gamma = []
     for i in range(len(a_vec)):
@@ -49,6 +34,7 @@ if __name__ == '__main__':
     y_hat = np.zeros((n_samples, 1))
     active_index = []
     active_x = []
+    x_axis = [0]
     beta_hat = np.zeros((n_features + 1, n_features))
     for i in range(n_features):
         residue = y - y_hat
@@ -81,17 +67,21 @@ if __name__ == '__main__':
 
         if i == 0:
             beta_hat[1, active_index] = gamma * np.sign(c[active_index])
+            x_axis.append(np.abs(beta_hat[1, active_index]))
         elif i < n_features - 1:
             temp_beta = gamma * a * g_inv.dot(e)
             beta_hat[i + 1, active_index] = beta_hat[i, active_index] + (temp_beta * np.sign(c[active_index])).reshape(len(active_index),)
-
+            x_axis.append(np.sum(np.abs(beta_hat[i + 1, active_index])))
+            
     beta_hat[-1, :] = np.linalg.pinv(x.T.dot(x)).dot(x.T).dot(y).reshape(len(active_index))
+    x_axis.append(np.sum(np.abs(beta_hat[-1, :])))
 
     for i in active_index:
         plt.plot(beta_hat[:, i])
         plt.plot([i], [0], 'o', markersize=3)
         plt.text(active_index.index(i), 0, str(i + 1))
     plt.ylabel(r'$\beta_j$')
+    plt.xlabel(r'$t=\sum|\beta_j|$')
     plt.show()
 
     pass
